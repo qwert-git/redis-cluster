@@ -4,6 +4,7 @@ It is a learning project to set up the Redis cluster with Sentinel and try the p
 The Redis cluster was created with the docker-compose file. It consists of one master, one slave, and one sentinel server, as an example, but for production purposes, it could be scaled. The Redis team recommends using at least three sentinel servers for production purposes.
 ## Probabilistic cache
 The probabilistic cache implemented with the test console application could be used for production implementation as an example.
+It prevents re-calculating the cache in parallel for several threads after it expires. Instead of it with some chance of probability, one of the threads re-calculates the cache before it expires.
 
 ### Log examples:
 ```
