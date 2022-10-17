@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  redis-master:
+    image: redis
+    container_name: "redis-master"
+    ports:
+      - "6379:6379"
+    command: "redis-server /etc/redis-config/master.conf"
+    volumes:
+      - redis_master_db:/data/
+      - "./config/master/:/etc/redis-config/"
+  
+  redis-slave:
+    image: redis
+    container_name: "redis-slave"
+    ports:
+      - "6380:6379"
+    command: "redis-server /etc/redis-config/slave.conf"
+    volumes:
+      - redis_slave_db:/data/
+      - "./config/slave/:/etc/redis-config/"
+    depends_on:
+      - redis-master
+    
+  redis-sentinel:
+    image: redis
+    container_name: redis-sentinel
+    ports:
+      - "26379:26379"
+    command: "redis-sentinel /etc/redis-config/sentinel.conf"
+    volumes:
+      - "./config/sentinel/:/etc/redis-config/"
+    depends_on:
+      - redis-master
+      - redis-slave
+
+
+volumes:
+  redis_master_db : {}
+  redis_slave_db : {}
